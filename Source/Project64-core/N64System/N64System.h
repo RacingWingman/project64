@@ -28,7 +28,7 @@ class CRecompiler;
 
 class VideoInterfaceHandler;
 
-//#define TEST_SP_TRACKING  // Track the SP to make sure all ops pick it up fine
+// #define TEST_SP_TRACKING  // Track the SP to make sure all ops pick it up fine
 enum CN64SystemCB
 {
     CN64SystemCB_Reset,
@@ -193,6 +193,7 @@ private:
     CProfiling m_CPU_Usage; // Used to track the CPU usage
     CRecompiler * m_Recomp;
     CSpeedLimiter m_Limiter;
+    bool m_TlbUsed;
     bool m_InReset;
     int32_t m_NextTimer;
     CSystemTimer m_SystemTimer;

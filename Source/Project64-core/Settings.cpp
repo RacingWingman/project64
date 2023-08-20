@@ -247,6 +247,7 @@ void CSettings::AddHowToHandleSetting(const char * BaseDirectory)
 
     // User interface
     AddHandler(UserInterface_ShowCPUPer, new CSettingTypeApplication("Settings", "Display CPU Usage", (uint32_t) false));
+    AddHandler(UserInterface_ShowTLB, new CSettingTypeApplication("Settings", "Show TLB", (uint32_t) false));
     AddHandler(UserInterface_DisplayFrameRate, new CSettingTypeApplication("Settings", "Display Frame Rate", (uint32_t) false));
     AddHandler(UserInterface_FrameDisplayType, new CSettingTypeApplication("Settings", "Frame Rate Display Type", (uint32_t)FR_VIs));
     AddHandler(Directory_Plugin, new CSettingTypeSelectedDirectory("Dir:Plugin", Directory_PluginInitial, Directory_PluginSelected, Directory_PluginUseSelected, Directory_Plugin));

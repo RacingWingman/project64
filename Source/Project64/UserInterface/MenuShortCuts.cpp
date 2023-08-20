@@ -447,6 +447,7 @@ void CShortCuts::Load(bool InitialValues)
     AddShortCut(ID_OPTIONS_CONFIG_RSP, STR_SHORTCUT_OPTIONS, MENU_CONFG_RSP, CMenuShortCutKey::ACCESS_NOT_IN_FULLSCREEN);
     AddShortCut(ID_OPTIONS_CPU_USAGE, STR_SHORTCUT_OPTIONS, MENU_SHOW_CPU, CMenuShortCutKey::ACCESS_GAME_RUNNING);
     AddShortCut(ID_OPTIONS_SETTINGS, STR_SHORTCUT_OPTIONS, MENU_SETTINGS, CMenuShortCutKey::ACCESS_NOT_IN_FULLSCREEN);
+    AddShortCut(ID_OPTIONS_SHOW_TLB, STR_SHORTCUT_OPTIONS, MENU_SHOW_TLB, CMenuShortCutKey::ACCESS_GAME_RUNNING);
 
     CPath ShortCutFile = UISettingsLoadStringVal(SupportFile_ShortCuts);
     if (!ShortCutFile.Exists() || InitialValues)

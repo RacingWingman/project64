@@ -187,6 +187,7 @@ enum SettingID
     // User interface
     UserInterface_BasicMode,
     UserInterface_ShowCPUPer,
+    UserInterface_ShowTLB,
     UserInterface_DisplayFrameRate,
     UserInterface_FrameDisplayType,
 

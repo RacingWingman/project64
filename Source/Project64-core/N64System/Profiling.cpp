@@ -88,6 +88,18 @@ void CProfiling::ShowCPU_Usage()
     }
 }
 
+void CProfiling::ShowTLB_Usage(bool state)
+{
+    if (state == true)
+    {
+        g_Notify->DisplayMessage(0, stdstr_f("TLB used at least once: true").c_str());
+    }
+    else
+    {
+        g_Notify->DisplayMessage(0, stdstr_f("TLB used at least once: false").c_str());
+    }
+}
+
 void CProfiling::ResetTimers()
 {
     memset(m_Timers, 0, sizeof(m_Timers));

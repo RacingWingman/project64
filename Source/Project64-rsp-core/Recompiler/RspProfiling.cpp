@@ -47,7 +47,6 @@ public:
         m_StartTimeHi = HiValue;
         m_StartTimeLo = LoValue;
 #else
-        DebugBreak();
 #endif
         return OldTimerAddr;
     }
@@ -82,7 +81,6 @@ public:
             m_Entries.insert(PROFILE_ENRTIES::value_type(m_CurrentTimerAddr, TimeTaken));
         }
 #else
-        DebugBreak();
 #endif
 
         uint32_t OldTimerAddr = m_CurrentTimerAddr;

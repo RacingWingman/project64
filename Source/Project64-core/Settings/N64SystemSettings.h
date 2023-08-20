@@ -18,6 +18,10 @@ protected:
     {
         return m_bShowCPUPer;
     }
+    inline static bool bShowTLB(void)
+    {
+        return m_bShowTLB;
+    }
     inline static bool bShowDListAListCount(void)
     {
         return m_bShowDListAListCount;
@@ -37,6 +41,7 @@ private:
     static bool m_bShowCPUPer;
     static bool m_bBasicMode;
     static bool m_bLimitFPS;
+    static bool m_bShowTLB;
     static bool m_bShowDListAListCount;
     static bool m_bDisplayFrameRate;
     static bool m_UpdateControllerOnRefresh;

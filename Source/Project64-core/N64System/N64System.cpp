@@ -31,11 +31,12 @@ CN64System::CN64System(CPlugins * Plugins, uint32_t randomizer_seed, bool SavesR
     m_SyncCPU(nullptr),
     m_SyncPlugins(nullptr),
     m_MMU_VM(*this, SavesReadOnly),
-    //m_Cheats(m_MMU_VM),
+    // m_Cheats(m_MMU_VM),
     m_TLB(this),
     m_Reg(this, this),
     m_Recomp(nullptr),
     m_InReset(false),
+    m_TlbUsed(false),
     m_NextTimer(0),
     m_SystemTimer(*this),
     m_bCleanFrameBox(true),
@@ -433,7 +434,7 @@ bool CN64System::LoadFileImageIPL(const char * FileLoc)
 
     // Mark the N64DD IPL as loading
     WriteTrace(TraceN64System, TraceDebug, "Mark N64DD IPL as loading");
-    //g_Settings->SaveString(Game_File, "");
+    // g_Settings->SaveString(Game_File, "");
     g_Settings->SaveBool(GameRunning_LoadingInProgress, true);
 
     // Try to load the passed N64DD IPL
@@ -470,7 +471,7 @@ bool CN64System::LoadFileImageIPL(const char * FileLoc)
         else if (g_DDRom->CicChipID() == CIC_NUS_8401)
             g_Settings->SaveString(File_DiskIPLTOOLPath, FileLoc);
 
-        //g_Settings->SaveString(Game_File, FileLoc);
+        // g_Settings->SaveString(Game_File, FileLoc);
         g_Settings->SaveBool(GameRunning_LoadingInProgress, false);
     }
     else
@@ -495,7 +496,7 @@ bool CN64System::LoadDiskImage(const char * FileLoc, const bool Expansion)
 
     // Mark the disk as loading
     WriteTrace(TraceN64System, TraceDebug, "Mark disk as loading");
-    //g_Settings->SaveString(Game_File, "");
+    // g_Settings->SaveString(Game_File, "");
     g_Settings->SaveBool(GameRunning_LoadingInProgress, true);
 
     // Try to load the passed N64 disk
@@ -702,7 +703,7 @@ bool CN64System::SelectAndLoadFileImageIPL(Country country, bool combo)
         {
             if (!g_Rom->IsLoadedRomDDIPL())
             {
-                //g_Notify->DisplayError(MSG_FAIL_IMAGE_IPL);
+                // g_Notify->DisplayError(MSG_FAIL_IMAGE_IPL);
                 g_Notify->DisplayWarning(IPLROMError);
                 g_Settings->SaveString(IPLROMPathSetting, "");
                 return false;
@@ -732,7 +733,7 @@ bool CN64System::EmulationStarting(CThread * thread)
             if (g_Disk != nullptr)
             {
                 g_Disk->SaveDiskImage();
-                //g_Notify->DisplayError(g_Disk->GetError());
+                // g_Notify->DisplayError(g_Disk->GetError());
                 WriteTrace(TraceN64System, TraceDebug, "64DD Save Done");
             }
         }
@@ -1047,7 +1048,7 @@ void CN64System::InitRegisters(bool bPostPif, CMipsMemoryVM & MMU)
     if (g_DDRom && (g_DDRom->CicChipID() == CIC_NUS_8401 || (g_Disk && g_Disk->GetCountry() == Country_Unknown)))
         m_Reg.ASIC_ID_REG = 0x00040000;
 
-    //m_Reg.REVISION_REGISTER   = 0x00000511;
+    // m_Reg.REVISION_REGISTER   = 0x00000511;
     m_Reg.FixFpuLocations();
 
     if (bPostPif)
@@ -2639,6 +2640,10 @@ void CN64System::RefreshScreen()
         m_CPU_Usage.ShowCPU_Usage();
         m_CPU_Usage.StartTimer(CPU_UsageAddr != Timer_None ? CPU_UsageAddr : Timer_R4300);
     }
+    if (bShowTLB())
+    {
+        m_CPU_Usage.ShowTLB_Usage(m_TlbUsed);
+    }
     if ((m_Reg.STATUS_REGISTER & STATUS_IE) != 0)
     {
         g_Enhancements->ApplyActive(m_MMU_VM, g_BaseSystem->m_Plugins, !m_SyncSystem);
@@ -2648,6 +2653,7 @@ void CN64System::RefreshScreen()
 
 void CN64System::TLB_Mapped(uint32_t VAddr, uint32_t Len, uint32_t PAddr, bool bReadOnly)
 {
+    m_TlbUsed = true;
     m_MMU_VM.TLB_Mapped(VAddr, Len, PAddr, bReadOnly);
 }
 

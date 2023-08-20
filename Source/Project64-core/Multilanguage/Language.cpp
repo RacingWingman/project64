@@ -71,6 +71,7 @@ void CLanguage::LoadDefaultStrings(void)
     DEF_STR(MENU_CONFG_RSP, "&RSP Settings");
     DEF_STR(MENU_SHOW_CPU, "Show CPU &Stats");
     DEF_STR(MENU_SETTINGS, "Configura&tion");
+    DEF_STR(MENU_SHOW_TLB, "&Show TLB");
 
     // Debugger menu
     DEF_STR(MENU_DEBUGGER, "&Debugger");
@@ -746,7 +747,7 @@ LANG_STR CLanguage::GetNextLangString(void * OpenFile)
 
     FILE * file = (FILE *)OpenFile;
 
-    //while(token!='#' && !feof(file)) { fread(&token, 1, 1, file); }
+    // while(token!='#' && !feof(file)) { fread(&token, 1, 1, file); }
     if (feof(file))
     {
         return LANG_STR(0, "");

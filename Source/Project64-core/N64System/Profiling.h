@@ -17,6 +17,8 @@ public:
     // Display the CPU usage
     void ShowCPU_Usage();
 
+    void ShowTLB_Usage(bool state);
+
     void ResetTimers(void);
 
 private:

@@ -23,6 +23,7 @@ CMainMenu::CMainMenu(CMainGui * hMainWindow) :
     m_ChangeUISettingList.push_back(UserInterface_AlwaysOnTop);
     m_ChangeUISettingList.push_back(UserInterface_ShowingNagWindow);
     m_ChangeSettingList.push_back(UserInterface_ShowCPUPer);
+    m_ChangeSettingList.push_back(UserInterface_ShowTLB);
     m_ChangeSettingList.push_back(Logging_GenerateLog);
     m_ChangeSettingList.push_back(Debugger_RecordExecutionTimes);
     m_ChangeSettingList.push_back(Debugger_EndOnPermLoop);
@@ -495,6 +496,18 @@ bool CMainMenu::ProcessMessage(HWND hWnd, DWORD /*FromAccelerator*/, DWORD MenuI
         else
         {
             g_Settings->SaveBool(UserInterface_ShowCPUPer, true);
+        }
+        break;
+    case ID_OPTIONS_SHOW_TLB:
+        WriteTrace(TraceUserInterface, TraceDebug, "ID_OPTIONS_SHOW_TLB");
+        if (g_Settings->LoadBool(UserInterface_ShowTLB))
+        {
+            g_Settings->SaveBool(UserInterface_ShowTLB, false);
+            g_Notify->DisplayMessage(0, EMPTY_STRING);
+        }
+        else
+        {
+            g_Settings->SaveBool(UserInterface_ShowTLB, true);
         }
         break;
     case ID_OPTIONS_SETTINGS: OnSettings(hWnd); break;
@@ -1071,6 +1084,17 @@ void CMainMenu::FillOutMenu(HMENU hMenu)
         }
         OptionMenu.push_back(Item);
     }
+
+    if (!inBasicMode)
+    {
+        Item.Reset(ID_OPTIONS_SHOW_TLB, MENU_SHOW_TLB, m_ShortCuts.ShortCutString(ID_OPTIONS_SHOW_TLB, RunningState));
+        if (g_Settings->LoadDword(UserInterface_ShowTLB))
+        {
+            Item.SetItemTicked(true);
+        }
+        OptionMenu.push_back(Item);
+    }
+
     OptionMenu.push_back(MENU_ITEM(ID_OPTIONS_SETTINGS, MENU_SETTINGS, m_ShortCuts.ShortCutString(ID_OPTIONS_SETTINGS, RunningState)));
 
     // Profile menu
